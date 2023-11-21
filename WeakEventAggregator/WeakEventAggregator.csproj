@@ -2,6 +2,38 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>.NET Weak Event Aggregator</Title>
+    <Company>Marc Armbruster</Company>
+    <Description>An easy to use event aggregator. Thread safe, uses only weak references</Description>
+    <Copyright>Marc Armbruster</Copyright>
+    <PackageProjectUrl>https://github.com/MarcArmbruster/WeakEventAggregator</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MarcArmbruster/WeakEventAggregator</RepositoryUrl>
+    <PackageTags>C#, EventAggregator, Pattern</PackageTags>
+    <AssemblyName>WeakEventAggregator</AssemblyName>
+    <PackageId>WeakEventAggregator</PackageId>
+    <Authors>MarcArmbruster</Authors>
+    <Product>Marc Armbruster</Product>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="PackageReadMe\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
