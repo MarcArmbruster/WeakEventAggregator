@@ -4,7 +4,8 @@ The WeakEventAggregatoris an easy to use EventAggregator providing following ben
 - Factory to create a named EventAggregator instance
 - Subscribe events
 - Publish events
-- Manage event registrations
+- Manage event registrations (uses WeakReferences to registered delegates)
+- Thread-safe
 
 Event types are all classes that implements the (empty) IEvent interface
 
