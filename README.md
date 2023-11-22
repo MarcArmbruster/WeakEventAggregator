@@ -8,6 +8,7 @@ The WeakEventAggregatoris an easy to use EventAggregator providing following ben
 - Thread-safe
 
 Event types are all classes that implements the (empty) IEvent interface
+
 EvantArgs (Payloads) are all classes that implements the (empty) IPayload interface
 
 ## Example
