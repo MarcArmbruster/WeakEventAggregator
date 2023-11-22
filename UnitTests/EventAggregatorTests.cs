@@ -175,4 +175,18 @@ public class EventAggregatorTests
         Assert.IsFalse(aggreagtor.HasRegistrations<MyEvent1>());
         Assert.IsTrue(aggreagtor.HasRegistrations<MyEvent2>());
     }
+
+    [TestMethod]
+    [ExpectedException(typeof(PayloadMixtureException))]
+    public void MixtureTest()
+    {
+        List<string> operations = new List<string>();
+
+        var aggreagtor = Factory.GetNewEventAggregatorInstance("myAggregator");
+        var myDelegate1 = new Action<MyPayload1>(x => operations.Add(x.Content ?? string.Empty));
+        var myDelegate2 = new Action<MyPayload2>(x => operations.Add(x.Content ?? string.Empty));
+
+        aggreagtor.Subscribe<MyEvent1, MyPayload1>(myDelegate1);
+        aggreagtor.Subscribe<MyEvent1, MyPayload2>(myDelegate2);
+    }
 }

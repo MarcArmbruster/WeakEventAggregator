@@ -160,6 +160,7 @@
             }
             else
             {
+                this.AvoidPayloadMixture(key, action.GetType());
                 foreach (var actionReference in registrations[key])
                 {
                     if (actionReference.TryGetTarget(out var registeredAction))
@@ -173,6 +174,34 @@
                 }
 
                 registrations[key].Add(new WeakReference<Delegate>(action));
+            }
+        }
+
+        /// <summary>
+        /// Checks the uniqueness of EnventType-PayloadType pair within the internal registrations.
+        /// </summary>
+        /// <param name="typeKey">The type key</param>
+        /// <param name="nextActionType">The type of the next delegate to be registered.</param>
+        /// <exception cref="PayloadMixtureException">Exception in case of a detected mixture.</exception>
+        private void AvoidPayloadMixture(string typeKey, Type nextActionType)
+        {
+            if (registrations.ContainsKey(typeKey))
+            {
+                var references = registrations[typeKey];
+                foreach (var reference in references)
+                {
+                    if (reference.TryGetTarget(out var action))
+                    {
+                        string existingFullName = action.GetType().FullName;
+                        string newFullName = nextActionType.FullName;
+                        if (existingFullName != newFullName)
+                        {
+                            throw new PayloadMixtureException(
+                                @"For an event type only one distinct payload type is allowed. 
+                                  Do not use a mixture of payload types for a event type.");
+                        }
+                    }
+                }                
             }
         }
 
