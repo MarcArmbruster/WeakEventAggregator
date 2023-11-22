@@ -18,7 +18,7 @@ var eventAggregator = Factory.GetNewEventAggregatorInstance("myEvAgg");
 ```
 Using the following delegate/method
 ```C#
-private void ShowMessage(MsgEventArgs eventArgs)
+private static void ShowMessage(MsgEventArgs eventArgs)
 {
     MessageBox.Show(eventArgs.Message, eventArgs.Title);
 }
