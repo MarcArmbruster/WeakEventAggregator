@@ -16,10 +16,17 @@ Creating an instance
 ```C#
 var eventAggregator = Factory.GetNewEventAggregatorInstance("myEvAgg");
 ```
+Using the following delegate/method
+```C#
+private void ShowMessage(GlobalMessageEventArgs eventArgs)
+{
+    MessageBox.Show(eventArgs.Message, eventArgs.Title);
+}
+```
 
 Subscribing an event 'MsgEvent' and event args (payload) of type MsgEventArgs
 ```C#
-eventAggregator.Subscribe<MsgEvent, MsgEventArgs>(ea => MessageBox.Show(ea.Message));
+eventAggregator.Subscribe<MsgEvent, MsgEventArgs>(ShowMessage);
 ```
 
 Raising an event
@@ -27,14 +34,19 @@ Raising an event
 eventAggregator.Publish<MsgEvent, MsgEventArgs>(new MsgEventArgs { Message = "Test" });
 ```
 
-This example uses the event
+Unsubscribing an event 'MsgEvent'
+```C#
+eventAggregator.Unsubscribe<MsgEvent, MsgEventArgs>(ShowMessage);
+```
+
+This example uses this event
 ```C#
 public class MsgEvent : IEvent
 {
 }
 ```
 
-and the event args (payload)
+and this event args (payload)
 ```C#
 public class MsgEventArgs : IPayload
 {
