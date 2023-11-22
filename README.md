@@ -18,7 +18,7 @@ var eventAggregator = Factory.GetNewEventAggregatorInstance("myEvAgg");
 ```
 Using the following delegate/method
 ```C#
-private void ShowMessage(GlobalMessageEventArgs eventArgs)
+private void ShowMessage(MsgEventArgs eventArgs)
 {
     MessageBox.Show(eventArgs.Message, eventArgs.Title);
 }
@@ -50,6 +50,7 @@ and this event args (payload)
 ```C#
 public class MsgEventArgs : IPayload
 {
+    public string Title { get; set; } = string.Empty;
     public string Message { get; set; } = string.Empty;
 }
 ```
