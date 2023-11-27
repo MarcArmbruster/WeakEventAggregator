@@ -44,7 +44,7 @@
         /// </summary>
         /// <typeparam name="TEventType">The event type.</typeparam>
         /// <returns>All registered delegates.</returns>
-        IEnumerable<Delegate> GetRegisteredDelegates<TEventType>()
+        IEnumerable<DelegateReference> GetRegisteredDelegates<TEventType>()
             where TEventType : IEvent;
 
         /// <summary>

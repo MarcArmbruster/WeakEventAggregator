@@ -152,6 +152,7 @@ public class EventAggregatorTests
             aggreagtor.PublishAsync<MyEvent1, MyPayload1>(new MyPayload1 { Content = i.ToString() });
         }
 
+        Thread.Sleep(1000);
         Assert.AreEqual(3000, operations.Count);
         for (int i = 0; i < 1000; i++)
         {

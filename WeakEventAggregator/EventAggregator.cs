@@ -31,8 +31,8 @@
         /// <summary>
         /// The registrations repository.
         /// </summary>
-        private readonly ConcurrentDictionary<string, List<WeakReference<Delegate>>> registrations
-            = new ConcurrentDictionary<string, List<WeakReference<Delegate>>>();
+        private readonly ConcurrentDictionary<string, List<DelegateReference>> registrations
+            = new ConcurrentDictionary<string, List<DelegateReference>>();
 
         /// <summary>
         /// Name of this eventa aggregator instance.
@@ -65,26 +65,16 @@
         /// </summary>
         /// <typeparam name="TEventType">The event type.</typeparam>
         /// <returns>All registered delegates.</returns>
-        public IEnumerable<Delegate> GetRegisteredDelegates<TEventType>()
+        public IEnumerable<DelegateReference> GetRegisteredDelegates<TEventType>()
             where TEventType : IEvent
         {
             string key = typeof(TEventType).FullName ?? string.Empty;
             if (registrations.ContainsKey(key))
             {
-                List<Delegate> delegates = new List<Delegate>();
-                var references = registrations[key];
-                references.ForEach(r =>
-                { 
-                    if (r.TryGetTarget(out var target))
-                    {
-                        delegates.Add(target);
-                    }
-                });
-
-                return delegates;
+                return registrations[key];
             }
 
-            return Enumerable.Empty<Delegate>();
+            return Enumerable.Empty<DelegateReference>();
         }
 
         /// <summary>
@@ -133,13 +123,7 @@
             {
                 foreach (var actionReference in registrations[key])
                 {
-                    if (actionReference.TryGetTarget(out var action))
-                    {
-                        if (action is Action<TPayload> payloadAction)
-                        {
-                            payloadAction.Invoke(payload);
-                        }
-                    }
+                    actionReference.Target.DynamicInvoke(payload);
                 }
             }
         }
@@ -155,25 +139,25 @@
             string key = typeof(TEventType).FullName ?? string.Empty;
             if (!registrations.ContainsKey(key))
             {
-                registrations.AddOrUpdate(key, new List<WeakReference<Delegate>>(), (k, v) => new List<WeakReference<Delegate>>());
-                registrations[key].Add(new WeakReference<Delegate>(action));
+                registrations.AddOrUpdate(key, new List<DelegateReference> (), (k, v) => new List<DelegateReference>());
+                registrations[key].Add(new DelegateReference(action, false));
             }
             else
             {
                 this.AvoidPayloadMixture(key, action.GetType());
                 foreach (var actionReference in registrations[key])
                 {
-                    if (actionReference.TryGetTarget(out var registeredAction))
+                    if (actionReference.Target is Delegate registeredAction)
                     {
                         if (registeredAction.Equals(action))
                         {
                             // skip multiple registrations
-                            return;                            
+                            return;
                         }
                     }
                 }
 
-                registrations[key].Add(new WeakReference<Delegate>(action));
+                registrations[key].Add(new DelegateReference(action, false));
             }
         }
 
@@ -190,7 +174,7 @@
                 var references = registrations[typeKey];
                 foreach (var reference in references)
                 {
-                    if (reference.TryGetTarget(out var action))
+                    if (reference.Target is Delegate action)
                     {
                         string existingFullName = action.GetType().FullName;
                         string newFullName = nextActionType.FullName;
@@ -201,7 +185,7 @@
                                   Do not use a mixture of payload types for a event type.");
                         }
                     }
-                }                
+                }
             }
         }
 
@@ -216,16 +200,13 @@
             string key = typeof(TEventType).FullName ?? string.Empty;
             if (registrations.ContainsKey(key))
             {
-                List<WeakReference<Delegate>> removeables = new List<WeakReference<Delegate>>();
+                List<DelegateReference> removeables = new List<DelegateReference>();
                 foreach (var actionReference in registrations[key])
                 {
-                    if (actionReference.TryGetTarget(out var registeredAction))
+                    if (actionReference.Target.Equals(action))
                     {
-                        if (registeredAction.Equals(action))
-                        {
-                            removeables.Add(actionReference);                            
-                        }
-                    }
+                        removeables.Add(actionReference);
+                    }                    
                 }
 
                 foreach (var reference in removeables)
