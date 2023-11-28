@@ -11,10 +11,18 @@ Event types are all classes that implements the (empty) IEvent interface
 
 EvantArgs (Payloads) are all classes that implements the (empty) IPayload interface
 
+## Release Notes
+### Version 1.0.1
+- Check to avoid payload mixtures on a defined event type added. You can configure the behavior by the boolean paramter value provided by the factory method.
+- Internal event registration and event handling supports also WPF applications.
+
+### Version 1.0.0
+- initial version: base event aggregationimplementation
+
 ## Example
 Creating an instance
 ```C#
-var eventAggregator = Factory.GetNewEventAggregatorInstance("myEvAgg");
+var eventAggregator = Factory.GetNewEventAggregatorInstance("myEvAgg", false);
 ```
 Using the following delegate/method
 ```C#

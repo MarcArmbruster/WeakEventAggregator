@@ -34,6 +34,9 @@
 
         private readonly Type theDelegateType;
 
+        /// <summary>
+        /// Gets the registered target delegate
+        /// </summary>
         public Delegate Target
         {
             get
@@ -47,24 +50,34 @@
             }
         }
 
-        public DelegateReference(Delegate @delegate, bool keepReferenceAlive)
+        /// <summary>
+        /// The constructor.
+        /// </summary>
+        /// <param name="targetDelegate">The target delegate.</param>
+        /// <param name="keepReferenceAlive">Flag: keep reference alive.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public DelegateReference(Delegate targetDelegate, bool keepReferenceAlive)
         {
-            if ((object)@delegate == null)
+            if ((object)targetDelegate == null)
             {
-                throw new ArgumentNullException("delegate");
+                throw new ArgumentNullException("targetDelegate");
             }
 
             if (keepReferenceAlive)
             {
-                theDelegateReference = @delegate;
+                theDelegateReference = targetDelegate;
                 return;
             }
 
-            theWeakReferenceToTarget = new WeakReference(@delegate.Target);
-            theMethodInfo = @delegate.GetMethodInfo();
-            theDelegateType = @delegate.GetType();
+            theWeakReferenceToTarget = new WeakReference(targetDelegate.Target);
+            theMethodInfo = targetDelegate.GetMethodInfo();
+            theDelegateType = targetDelegate.GetType();
         }
 
+        /// <summary>
+        /// Gets the delegate.
+        /// </summary>
+        /// <returns></returns>
         private Delegate TryGetDelegate()
         {
             if (theMethodInfo.IsStatic)

@@ -31,5 +31,16 @@
         {
             return new EventAggregator(name);
         }
+
+        /// <summary>
+        /// Creates a new EventAggregator instance.
+        /// </summary>
+        /// <param name="name">The name of the instance.</param>
+        /// <param name="checkPayloadMixture">If true: payload mixture will be checked (raises an exception). False by default.</param>
+        /// <returns>The new instance.</returns>
+        public static IEventAggregator GetNewEventAggregatorInstance(string name, bool checkPayloadMixture)
+        {
+            return new EventAggregator(name, checkPayloadMixture);
+        }
     }
 }

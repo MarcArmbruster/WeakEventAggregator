@@ -35,9 +35,14 @@
             = new ConcurrentDictionary<string, List<DelegateReference>>();
 
         /// <summary>
-        /// Name of this eventa aggregator instance.
+        /// Name of this event aaggregator instance.
         /// </summary>
         public string Name { get; }
+
+        /// <summary>
+        /// If true: payload mixture will be checked (raises an exception) 
+        /// </summary>
+        public bool CheckPayloadMixture { get; }
 
         /// <summary>
         /// Constructor.
@@ -46,6 +51,16 @@
         public EventAggregator(string name)
         {
             this.Name = name; 
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name">Name of this event aggregator instance.</param>
+        /// <param name="checkPayloadMixture">If true: payload mixture will be checked (raises an exception). False by default.</param>
+        public EventAggregator(string name, bool checkPayloadMixture) : this(name)
+        {
+            this.CheckPayloadMixture = checkPayloadMixture;
         }
 
         /// <summary>
@@ -169,6 +184,11 @@
         /// <exception cref="PayloadMixtureException">Exception in case of a detected mixture.</exception>
         private void AvoidPayloadMixture(string typeKey, Type nextActionType)
         {
+            if (!this.CheckPayloadMixture)
+            {
+                return;
+            }
+
             if (registrations.ContainsKey(typeKey))
             {
                 var references = registrations[typeKey];

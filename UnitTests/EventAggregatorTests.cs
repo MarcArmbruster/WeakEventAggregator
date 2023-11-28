@@ -179,7 +179,22 @@ public class EventAggregatorTests
 
     [TestMethod]
     [ExpectedException(typeof(PayloadMixtureException))]
-    public void MixtureTest()
+    public void MixtureNotAllowedTest()
+    {
+        List<string> operations = new List<string>();
+
+        var aggreagtor = Factory.GetNewEventAggregatorInstance("myAggregator", true);
+        var myDelegate1 = new Action<MyPayload1>(x => operations.Add(x.Content ?? string.Empty));
+        var myDelegate2 = new Action<MyPayload2>(x => operations.Add(x.Content ?? string.Empty));
+
+        aggreagtor.Subscribe<MyEvent1, MyPayload1>(myDelegate1);
+        aggreagtor.Subscribe<MyEvent1, MyPayload2>(myDelegate2);
+
+        Assert.AreEqual(2, aggreagtor.GetRegisteredDelegates<MyEvent1>().Count());
+    }
+
+    [TestMethod]
+    public void MixtureAllowedTest()
     {
         List<string> operations = new List<string>();
 
