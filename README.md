@@ -1,7 +1,7 @@
 # WeakEventAggregator
 
 The WeakEventAggregatoris an easy to use EventAggregator providing following benefits
-- Factory to create a named EventAggregator instance ('DI-ready')
+- Factory to create a named EventAggregator instance of type IEventAggregator ('DI-ready')
 - Subscribe events
 - Publish events
 - Manage event registrations (uses WeakReferences to registered delegates)
