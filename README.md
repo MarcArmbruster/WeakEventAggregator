@@ -1,7 +1,7 @@
 # WeakEventAggregator
 
 The WeakEventAggregatoris an easy to use EventAggregator providing following benefits
-- Factory to create a named EventAggregator instance
+- Factory to create a named EventAggregator instance ('DI-ready')
 - Subscribe events
 - Publish events
 - Manage event registrations (uses WeakReferences to registered delegates)
@@ -22,7 +22,7 @@ EvantArgs (Payloads) are all classes that implements the (empty) IPayload interf
 ## Example
 Creating an instance
 ```C#
-var eventAggregator = Factory.GetNewEventAggregatorInstance("myEvAgg", false);
+IEventAggregator eventAggregator = Factory.GetNewEventAggregatorInstance("myEvAgg", false);
 ```
 Using the following delegate/method
 ```C#
