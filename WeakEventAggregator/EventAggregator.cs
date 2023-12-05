@@ -72,7 +72,7 @@
             where TEventType : IEvent
         {
             string key = typeof(TEventType).FullName ?? string.Empty;
-            return registrations.ContainsKey(key);
+            return this.registrations.ContainsKey(key);
         }
 
         /// <summary>
@@ -84,9 +84,9 @@
             where TEventType : IEvent
         {
             string key = typeof(TEventType).FullName ?? string.Empty;
-            if (registrations.ContainsKey(key))
+            if (this.registrations.ContainsKey(key))
             {
-                return registrations[key];
+                return this.registrations[key];
             }
 
             return Enumerable.Empty<DelegateReference>();
@@ -100,10 +100,10 @@
             where TEventType : IEvent
         {
             string key = typeof(TEventType).FullName ?? string.Empty;
-            if (registrations.ContainsKey(key))
+            if (this.registrations.ContainsKey(key))
             {
-                registrations[key].Clear();
-                registrations.TryRemove(key, out _);
+                this.registrations[key].Clear();
+                _ = this.registrations.TryRemove(key, out _);
             }
         }
 
@@ -134,11 +134,11 @@
             where TPayload : IPayload
         {
             string key = typeof(TEventType).FullName ?? string.Empty;
-            if (registrations.ContainsKey(key))
+            if (this.registrations.ContainsKey(key))
             {
-                foreach (var actionReference in registrations[key])
+                foreach (var actionReference in this.registrations[key])
                 {
-                    actionReference.Target.DynamicInvoke(payload);
+                    _ = actionReference.Target.DynamicInvoke(payload);
                 }
             }
         }
@@ -154,8 +154,8 @@
             string key = typeof(TEventType).FullName ?? string.Empty;
             if (!registrations.ContainsKey(key))
             {
-                registrations.AddOrUpdate(key, new List<DelegateReference> (), (k, v) => new List<DelegateReference>());
-                registrations[key].Add(new DelegateReference(action, false));
+                this.registrations.AddOrUpdate(key, new List<DelegateReference> (), (k, v) => new List<DelegateReference>());
+                this.registrations[key].Add(new DelegateReference(action, false));
             }
             else
             {
@@ -172,7 +172,7 @@
                     }
                 }
 
-                registrations[key].Add(new DelegateReference(action, false));
+                this.registrations[key].Add(new DelegateReference(action, false));
             }
         }
 
@@ -189,9 +189,9 @@
                 return;
             }
 
-            if (registrations.ContainsKey(typeKey))
+            if (this.registrations.ContainsKey(typeKey))
             {
-                var references = registrations[typeKey];
+                var references = this.registrations[typeKey];
                 foreach (var reference in references)
                 {
                     if (reference.Target is Delegate action)
@@ -201,8 +201,9 @@
                         if (existingFullName != newFullName)
                         {
                             throw new PayloadMixtureException(
-                                @"For an event type only one distinct payload type is allowed. 
-                                  Do not use a mixture of payload types for a event type.");
+                                $@"For an event type only one distinct payload type is allowed. 
+                                   Do not use a mixture of payload types for a event type.\n
+                                   Affected event type: {typeKey}");
                         }
                     }
                 }
@@ -218,10 +219,10 @@
             where TPayload : IPayload
         {
             string key = typeof(TEventType).FullName ?? string.Empty;
-            if (registrations.ContainsKey(key))
+            if (this.registrations.ContainsKey(key))
             {
                 List<DelegateReference> removeables = new List<DelegateReference>();
-                foreach (var actionReference in registrations[key])
+                foreach (var actionReference in this.registrations[key])
                 {
                     if (actionReference.Target.Equals(action))
                     {
@@ -231,13 +232,13 @@
 
                 foreach (var reference in removeables)
                 {
-                    registrations[key].Remove(reference);
+                    _ = this.registrations[key].Remove(reference);
                 }
             }
 
-            if (registrations[key].Count == 0)
+            if (this.registrations[key].Count == 0)
             {
-                registrations.TryRemove(key, out _);
+                _ = this.registrations.TryRemove(key, out _);
             }
         }
     }

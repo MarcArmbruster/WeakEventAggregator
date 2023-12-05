@@ -41,12 +41,12 @@
         {
             get
             {
-                if ((object)theDelegateReference != null)
+                if ((object)this.theDelegateReference != null)
                 {
-                    return theDelegateReference;
+                    return this.theDelegateReference;
                 }
 
-                return TryGetDelegate();
+                return this.GetTheDelegate();
             }
         }
 
@@ -65,30 +65,30 @@
 
             if (keepReferenceAlive)
             {
-                theDelegateReference = targetDelegate;
+                this.theDelegateReference = targetDelegate;
                 return;
             }
 
-            theWeakReferenceToTarget = new WeakReference(targetDelegate.Target);
-            theMethodInfo = targetDelegate.GetMethodInfo();
-            theDelegateType = targetDelegate.GetType();
+            this.theWeakReferenceToTarget = new WeakReference(targetDelegate.Target);
+            this.theMethodInfo = targetDelegate.GetMethodInfo();
+            this.theDelegateType = targetDelegate.GetType();
         }
 
         /// <summary>
         /// Gets the delegate.
         /// </summary>
         /// <returns></returns>
-        private Delegate TryGetDelegate()
+        private Delegate GetTheDelegate()
         {
-            if (theMethodInfo.IsStatic)
+            if (this.theMethodInfo.IsStatic)
             {
-                return theMethodInfo.CreateDelegate(theDelegateType, null);
+                return this.theMethodInfo.CreateDelegate(this.theDelegateType, null);
             }
 
-            object target = theWeakReferenceToTarget.Target;
+            object target = this.theWeakReferenceToTarget.Target;
             if (target != null)
             {
-                return theMethodInfo.CreateDelegate(theDelegateType, target);
+                return this.theMethodInfo.CreateDelegate(this.theDelegateType, target);
             }
 
             return null;
