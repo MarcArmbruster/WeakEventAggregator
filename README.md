@@ -18,9 +18,6 @@ Event types are all classes that implements the (empty) IEvent interface
 EvantArgs (Payloads) are all classes that implements the (empty) IPayload interface
 
 ## Release Notes
-### Version 2.0.0
-- Properties in base classes atttributed with JsonIgnore
-- BaseVm method 'InitCommands' changed from abstract to virtual.
 
 ### Version 1.0.1
 - Check to avoid payload mixtures on a defined event type added. You can configure the behavior by the boolean paramter value provided by the factory method.
