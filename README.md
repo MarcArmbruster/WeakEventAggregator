@@ -1,5 +1,11 @@
 # WeakEventAggregator
 
+[![Nuget](https://img.shields.io/nuget/v/WeakEventAggregator?style=flat-square)](https://www.nuget.org/packages/WeakEventAggregator)
+[![License](https://img.shields.io/github/license/MarcArmbruster/WeakEventAggregator?style=flat-square)](https://github.com/MarcArmbruster/WeakEventAggregator/blob/master/LICENSE)
+[![Downloads](https://img.shields.io/nuget/dt/WeakEventAggregator?style=flat-square)](https://www.nuget.org/packages/WeakEventAggregator)
+[![GitHub](https://img.shields.io/badge/-source-181717.svg?logo=GitHub)](https://github.com/MarcArmbruster/WeakEventAggregator)
+
+
 The WeakEventAggregatoris an easy to use EventAggregator providing following benefits
 - Factory to create a named EventAggregator instance of type IEventAggregator ('DI-ready')
 - Subscribe events
@@ -12,6 +18,10 @@ Event types are all classes that implements the (empty) IEvent interface
 EvantArgs (Payloads) are all classes that implements the (empty) IPayload interface
 
 ## Release Notes
+### Version 2.0.0
+- Properties in base classes atttributed with JsonIgnore
+- BaseVm method 'InitCommands' changed from abstract to virtual.
+
 ### Version 1.0.1
 - Check to avoid payload mixtures on a defined event type added. You can configure the behavior by the boolean paramter value provided by the factory method.
 - Internal event registration and event handling supports also WPF applications.
