@@ -15,7 +15,7 @@ The WeakEventAggregatoris an easy to use EventAggregator providing following ben
 
 Event types are all classes that implements the (empty) IEvent interface
 
-EvantArgs (Payloads) are all classes that implements the (empty) IPayload interface
+EventArgs (Payloads) are all classes that implements the (empty) IPayload interface
 
 ## Release Notes
 
