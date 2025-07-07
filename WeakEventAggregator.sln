@@ -11,6 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 	ProjectSection(SolutionItems) = preProject
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
+		NugetPackageVersions\WeakEventAggregator.1.0.0.nupkg = NugetPackageVersions\WeakEventAggregator.1.0.0.nupkg
+		NugetPackageVersions\WeakEventAggregator.1.0.1.nupkg = NugetPackageVersions\WeakEventAggregator.1.0.1.nupkg
+		NugetPackageVersions\WeakEventAggregator.1.0.2.nupkg = NugetPackageVersions\WeakEventAggregator.1.0.2.nupkg
 	EndProjectSection
 EndProject
 Global

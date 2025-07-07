@@ -19,6 +19,9 @@ EventArgs (Payloads) are all classes that implements the (empty) IPayload interf
 
 ## Release Notes
 
+### Version 1.0.2
+- SBOM added
+
 ### Version 1.0.1
 - Check to avoid payload mixtures on a defined event type added. You can configure the behavior by the boolean paramter value provided by the factory method.
 - Internal event registration and event handling supports also WPF applications.
